@@ -39,18 +39,52 @@ This setup is based on running `httpd` in a Container on Fedora
 
 1. Build the container
 
-        $ podman build -t httpproxy .
+        $ podman build -t httpdproxy .
 
 
 ### Run container
 
-    $ podman run -d --rm --name httpproxy -p 8080:8080 localhost/httpproxy
+    $ podman run -d --rm --name httpdproxy -p 8080:8080 localhost/httpdproxy
 
 
 ### Test
+From a different host / network other than the proxy server hosting the container, run the following commands and notice the difference in IP address:
+
+    $ curl https://ipinfo.io/ip
+    $ curl --proxy-user "<username>:<password>" --proxy-digest -x http://localhost:8080/ https://ipinfo.io/ip
 
 
 ### Make persistent accross reboots
+1. Generate a systemd unit file of the running container:
+
+        $ podman generate systemd --name httpdproxy --new --files
+
+1. Move unit file in place:
+
+        $ mkdir -p ~/.config/systemd/user
+        $ mv container-<container_id>.service ~/.config/systemd/user/httpdproxy.service
+
+1. Make systemd recognise the new unit file and enable the service:
+
+        $ systemctl --user daemon-reload
+        $ systemctl –user enable –now httpdproxy.service
+        $ systemctl –user status httpdproxy.service
+        $ podman ps
+
+1. Make sure the container keeps running after logout:
+
+        $ loginctl enable-linger
+        
 
 
 ### Rebuild / update
+1. Pull updated httpd-24 container
+
+        $ podman pull quay.io/fedora/httpd-24
+        
+1. Rebuild container
+
+        $ cd ForwardProxy
+        $ git pull
+        $ podman build -t httpdproxy .
+        $ systemctl --user restart httpdproxy.service
