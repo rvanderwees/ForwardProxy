@@ -51,7 +51,7 @@ This setup is based on running `httpd` in a Container on Fedora
 From a different host / network other than the proxy server hosting the container, run the following commands and notice the difference in IP address:
 
     $ curl https://ipinfo.io/ip
-    $ curl --proxy-user "<username>:<password>" --proxy-digest -x http://localhost:8080/ https://ipinfo.io/ip
+    $ curl --proxy-user "proxy:<password>" --proxy-digest -x http://<hostname_of_proxy_server>:8080/ https://ipinfo.io/ip
 
 
 ### Make persistent accross reboots
