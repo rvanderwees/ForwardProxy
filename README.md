@@ -1,5 +1,5 @@
 # ForwardProxy
-Simple Apache HTTPD based non-caching Forward proxy - contaqiner on Fedora
+Simple Apache HTTPD based non-caching Forward proxy - container on Fedora
 
 
 ### Requirements
