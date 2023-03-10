@@ -67,8 +67,8 @@ From a different host / network other than the proxy server hosting the containe
 1. Make systemd recognise the new unit file and enable the service:
 
         $ systemctl --user daemon-reload
-        $ systemctl –user enable –now httpdproxy.service
-        $ systemctl –user status httpdproxy.service
+        $ systemctl --user enable --now httpdproxy.service
+        $ systemctl --user status httpdproxy.service
         $ podman ps
 
 1. Make sure the container keeps running after logout:
